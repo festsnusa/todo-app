@@ -1,5 +1,6 @@
 import Header from './components/Header.jsx'
 import Main from './components/Main.jsx'
+import TodoList from './components/TodoList.jsx'
 import Footer from './components/Footer.jsx'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
@@ -15,12 +16,32 @@ function App() {
     { "title": "Complete Todo App on Frontend Mentor", "isCompleted": false, id: uuidv4() }
   ])
 
-  console.log(todos)
+  const todosHandler = (text) => {
+    const newTodo = {
+      title: text,
+      isCompleted: false,
+      id: uuidv4()
+    }
+    setTodos([...todos, newTodo])
+    // console.log(todos)
+  }
+
+  const deleteTodoHandler = (id) => {
+    setTodos(todos.filter((el) => el.id !== id))
+    console.log('deleted')
+  }
+
+  const deleteTodosHandler = () => {
+    setTodos(todos.filter((todo) => todo.isCompleted))
+  }
+
+  const incompletedTodosCounts = todos.filter(todo => !todo.isCompleted).length
 
   return (
     <div className="App">
       <Header />
-      <Main todos={todos} />
+      <Main addTodo={todosHandler} />
+      <TodoList todos={todos} deleteTodo={deleteTodoHandler} incompletedTodosCounts={incompletedTodosCounts} />
       <Footer />
     </div>
   );
